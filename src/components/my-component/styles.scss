@@ -1,7 +1,18 @@
 .container {
     background-color: #68c4a6;
-
+    border-radius: 20px;
+    text-align: center;
+    margin: 10px;
+    padding: 5px;
+    width: 200px;
+    img {
+        width: 180px;
+    }
     .text {
-        font-size: 50px;
+        font-size: 20px;
+    }
+    p {
+        line-height: 1.2;
+        overflow: hidden;
     }
 }
