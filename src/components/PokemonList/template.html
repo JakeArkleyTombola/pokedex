@@ -1,9 +1,4 @@
-<div  class="container">
-    <img :src="url" />
-    <h2>{{name}}</h2> 
-    <!-- <p>Types: {{types}}<br>
-    Weaknesses:<br>
-    {{weaknesses}}<br>
-    Height: {{height}}<br>
-    Weight: {{weight}}</p> -->
+<div v-on:click="onClick" class="container">
+    <img :src="pokemon.img" />
+    <h2>{{pokemon.name}}</h2>
 </div>

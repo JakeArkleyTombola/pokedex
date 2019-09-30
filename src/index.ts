@@ -9,7 +9,7 @@ interface IPokemon {
     id: string
     name: string
     img: string
-    types: []
+    type: []
     weaknesses: []
     weight: string
     height: string
@@ -23,22 +23,16 @@ let v = new Vue({
     <div>
         <Header/>
         <SortBar/>
-            <div v-on:click="changePokemon" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
-                <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown
-                :name="pokemon.name"
-                :url="pokemon.img"
-                :types="pokemon.type.toString()"
-                :weaknesses="pokemon.weaknesses.toString()"
-                :weight="pokemon.weight"
-                :height="pokemon.height"
-                />       
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
+                <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown :pokemon="pokemon" v-on:selectPokemon="changePokemon"/>       
             </div>
-        <InfoPanel v-on:dismiss="changePokemon" v-if="infoPanelToggle"/>
+        <InfoPanel v-on:dismiss="dismiss" v-if="infoPanelToggle" :pokemon="pokemonData[currentPokemon]"/>
     </div>
     `,
     data: {
         pokemonData:[] as IPokemon[],
-        infoPanelToggle: false
+        infoPanelToggle: false,
+        currentPokemon: 0
     },
     components: {
         PokemonList,
@@ -54,8 +48,12 @@ let v = new Vue({
         })
     },
     methods: {
-        changePokemon () {
-            this.infoPanelToggle = !this.infoPanelToggle;
+        changePokemon (numb:number) {
+            this.infoPanelToggle = true;
+            this.currentPokemon = numb;
+        },
+        dismiss () {
+            this.infoPanelToggle = false;
         },
         aZSort() {
             this.pokemonData.sort(function(a, b) {
