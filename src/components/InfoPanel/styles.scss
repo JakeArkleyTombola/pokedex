@@ -1,7 +1,18 @@
 .background-blur {
-    background-color: red;
-    //position: fixed;
-    //height: 100%;
-    //width: 100%;
-    filter: blur(8px);
+    background-color: black;
+    opacity: 0.5;
+    position: fixed;
+    top: 0; left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.info-panel {
+    background-color: white;
+    position: fixed;
+    top: calc(50vh - 200px);
+    left: calc(50vw - 150px);
+    height: 400px;
+    width: 300px;
+    border-radius: 20px;
 }
