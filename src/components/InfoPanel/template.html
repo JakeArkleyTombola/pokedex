@@ -1,4 +1,7 @@
 <div>
-    <div class="background-blur"></div>
-    <div class="info-panel"></div>
+    <div v-on:click="onClick" class="background-blur"></div>
+    <div class="info-panel">
+        <p>{{name}}</p>
+        <img :src="url"/>
+    </div>
 </div>

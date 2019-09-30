@@ -11,15 +11,13 @@ interface IPokemon {
     types: []
 }
 
-
-
 let v = new Vue({
     el: "#app",
     template: `
     <div>
         <Header/>
         <SortBar/>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
+            <div v-on:click="changePokemon" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
                 <PokemonList v-for="pokemon in pokemonData"
                 :name="pokemon.name"
                 :url="pokemon.img"
@@ -29,13 +27,12 @@ let v = new Vue({
                 :height="pokemon.height"
                 />       
             </div>
-        <InfoPanel/>
+        <InfoPanel v-on:dismiss="changePokemon" v-if="infoPanelToggle"/>
     </div>
     `,
-    data() {
-        return {
-            pokemonData:[] as IPokemon[]
-        };
+    data: {
+        pokemonData:[] as IPokemon[],
+        infoPanelToggle: false
     },
     components: {
         PokemonList,
@@ -47,5 +44,10 @@ let v = new Vue({
         var i = axios.get('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json').then ((response:any) => {
         this.pokemonData = response.data.pokemon;
         })
+    },
+    methods: {
+        changePokemon () {
+            this.infoPanelToggle = !this.infoPanelToggle;
+        }
     }
 });
