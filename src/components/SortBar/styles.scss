@@ -3,8 +3,27 @@
 div.sticky {
     position: -webkit-sticky;
     position: sticky;
+    margin:0;
     top: 0;
-    background-color: yellow;
+    background-color: #e3e6b5;
     font-size: 20px;
+    height: 30px;
+ .sort {
+   float:left;
+   margin:5px;
+   width:100px;
+ }
+ .filter{
+   float:right;
+   margin:5px;
+   width:100px;
+ }
+ select {
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   text-align: center;
+   text-align-last: center;
+  background-color: white;
+ }
   }
 
