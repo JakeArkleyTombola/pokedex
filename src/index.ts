@@ -11,7 +11,7 @@ interface IPokemon {
 let v = new Vue({
     el: "#app",
     template: `
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 800px; margin: auto">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
         <my-component v-for="pokemon in pokemonData"
         :name="pokemon.name"
         :url="pokemon.img"
