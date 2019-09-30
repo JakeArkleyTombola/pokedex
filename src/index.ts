@@ -5,13 +5,21 @@ import axios from 'axios';
 interface IPokemon {
     name: string
     img: string
+    types: []
 }
 
 let v = new Vue({
     el: "#app",
     template: `
-    <div>
-        <my-component v-for="pokemon in pokemonData" :name="pokemon.name" :url="pokemon.img" />       
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 800px; margin: auto">
+        <my-component v-for="pokemon in pokemonData"
+        :name="pokemon.name"
+        :url="pokemon.img"
+        :types="pokemon.type.toString()"
+        :weaknesses="pokemon.weaknesses.toString()"
+        :weight="pokemon.weight"
+        :height="pokemon.height"
+        />       
     </div>
     `,
     data() {
@@ -26,7 +34,6 @@ let v = new Vue({
     mounted () {
         var i = axios.get('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json').then ((response:any) => {
         this.pokemonData = response.data.pokemon;
-
         })
-         }
+    }
 });
