@@ -6,9 +6,13 @@ import Header from "./components/Header/index.vue";
 import axios from 'axios';
 
 interface IPokemon {
+    id: string
     name: string
     img: string
     types: []
+    weaknesses: []
+    weight: string
+    height: string
 }
 
 let v = new Vue({
@@ -49,7 +53,7 @@ let v = new Vue({
         changePokemon () {
             this.infoPanelToggle = !this.infoPanelToggle;
         },
-        AZSort () {
+        aZSort() {
             this.pokemonData.sort(function(a, b) {
                 var x = a.name.toLowerCase();
                 var y = b.name.toLowerCase();
@@ -58,9 +62,24 @@ let v = new Vue({
                 return 0;
             })
         },
-        ZASort () {
-            this.AZSort()
+        zASort() {
+            this.aZSort()
             this.pokemonData.reverse()
+        },
+        heightSort() {
+            this.pokemonData.sort(function(a, b) {
+                var x:number = +a.height.replace(/[^\d.-]/g, '')
+                var y:number = +b.height.replace(/[^\d.-]/g, '')
+                return x - y})
+        },
+        weightSort() {
+            this.pokemonData.sort(function(a, b) {
+                var x:number = +a.weight.replace(/[^\d.-]/g, '')
+                var y:number = +b.weight.replace(/[^\d.-]/g, '')
+                return x - y})
+        },
+        numberSort() {
+            this.pokemonData.sort(function(a, b) {return +a.id - +b.id})
         }
 
     }
