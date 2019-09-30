@@ -13,6 +13,7 @@ interface IPokemon {
     weaknesses: []
     weight: string
     height: string
+    favourite: boolean
 }
 
 let v = new Vue({
@@ -22,7 +23,7 @@ let v = new Vue({
         <Header/>
         <SortBar/>
             <div v-on:click="changePokemon" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
-                <PokemonList v-for="pokemon in pokemonData"
+                <PokemonList v-for="pokemon in currentPokemon"
                 :name="pokemon.name"
                 :url="pokemon.img"
                 :types="pokemon.type.toString()"
@@ -36,6 +37,7 @@ let v = new Vue({
     `,
     data: {
         pokemonData:[] as IPokemon[],
+        currentPokemon:[] as IPokemon[],
         infoPanelToggle: false
     },
     components: {
@@ -46,7 +48,9 @@ let v = new Vue({
     },
     mounted () {
         var i = axios.get('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json').then ((response:any) => {
-        this.pokemonData = response.data.pokemon;
+        this.pokemonData = response.data.pokemon
+        for (let pokemon of this.pokemonData) {pokemon.favourite = false;}
+        this.currentPokemon = this.pokemonData
         })
     },
     methods: {
@@ -54,7 +58,7 @@ let v = new Vue({
             this.infoPanelToggle = !this.infoPanelToggle;
         },
         aZSort() {
-            this.pokemonData.sort(function(a, b) {
+            this.currentPokemon.sort(function(a, b) {
                 var x = a.name.toLowerCase();
                 var y = b.name.toLowerCase();
                 if (x < y) {return -1;}
@@ -64,22 +68,22 @@ let v = new Vue({
         },
         zASort() {
             this.aZSort()
-            this.pokemonData.reverse()
+            this.currentPokemon.reverse()
         },
         heightSort() {
-            this.pokemonData.sort(function(a, b) {
+            this.currentPokemon.sort(function(a, b) {
                 var x:number = +a.height.replace(/[^\d.-]/g, '')
                 var y:number = +b.height.replace(/[^\d.-]/g, '')
                 return x - y})
         },
         weightSort() {
-            this.pokemonData.sort(function(a, b) {
+            this.currentPokemon.sort(function(a, b) {
                 var x:number = +a.weight.replace(/[^\d.-]/g, '')
                 var y:number = +b.weight.replace(/[^\d.-]/g, '')
                 return x - y})
         },
         numberSort() {
-            this.pokemonData.sort(function(a, b) {return +a.id - +b.id})
+            this.currentPokemon.sort(function(a, b) {return +a.id - +b.id})
         }
 
     }
