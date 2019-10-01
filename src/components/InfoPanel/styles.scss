@@ -16,11 +16,29 @@
     width: 300px;
     border-radius: 20px;
     text-align: center;
+    padding: 10px;
+
     h3 {
         font-size: 26px;
+        line-height: 0.8;
+    }
+    .pokemon {
+        height: 150px;
+        width: 150px;
     }
     p {
         font-size: 20px;
         line-height: 1.3;
     }
-}
+    .favourite, .cross {
+        height: 40px;
+        width: 40px;
+        cursor: pointer;
+    }
+    .favourite {
+        float: left;
+    }
+    .cross {
+        float: right;
+    }
+} 

@@ -4,8 +4,12 @@ import Vue from "vue";
 export default Vue.extend({
     props: ['pokemon'],
     methods: {
-        onClick() {
+        dismiss() {
           this.$emit("dismiss")
+        },
+        favourite() {
+          this.$emit("toggleFavourite", this.pokemon)
+          this.$forceUpdate();
         }
     }
 });

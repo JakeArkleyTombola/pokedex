@@ -29,12 +29,14 @@ let v = new Vue({
             <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
                 <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown :pokemon="pokemon" v-on:selectPokemon="changePokemon"/>       
             </div>
-        <InfoPanel v-on:dismiss="dismiss" v-if="infoPanelToggle" :pokemon="currentPokemon"/>
+        <InfoPanel v-on:toggleFavourite="toggleFavourite" v-on:dismiss="dismiss" v-if="infoPanelToggle" :pokemon="currentPokemon"/>
     </div>
     `,
     data: {
         pokemonData:[] as IPokemon[],
         infoPanelToggle: false,
+        currentSort: "",
+        currentFilter: "",
         currentPokemon: {} as IPokemon
     },
     components: {
@@ -49,9 +51,6 @@ let v = new Vue({
         var i = axios.get('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json').then ((response:any) => {
         this.pokemonData = response.data.pokemon
         for (let pokemon of this.pokemonData) {pokemon.favourite = false;}
-        for (let i = 0; i < 5; i++) {
-            this.pokemonData[i].favourite = true
-        }
         this.selectFilter("all");
 
         })
@@ -64,25 +63,37 @@ let v = new Vue({
         dismiss () {
             this.infoPanelToggle = false
         },
+        toggleFavourite(pokemon:IPokemon) {
+            pokemon.favourite = !pokemon.favourite
+            this.filter()
+        },
         selectSort(sort:string = "") {
-            switch(sort) {
+            this.currentSort = sort;
+            this.sort()
+        },
+        sort() {
+            switch(this.currentSort) {
                 case "number":
-                    this.numberSort(); break;
+                    this.numberSort(); break
                 case "az":
-                    this.aZSort(); break;
+                    this.aZSort(); break
                 case "za":
-                    this.zASort(); break;
+                    this.zASort(); break
                 case "height":
-                    this.heightSort(); break;
+                    this.heightSort(); break
                 case "weight":
-                    this.weightSort(); break;
+                    this.weightSort(); break
                 default:
-                    this.numberSort(); break;
+                    this.numberSort(); break
             }
-            this.$forceUpdate();
+            this.$forceUpdate()
         },
         selectFilter(filter:string = "") {
-            switch(filter) {
+            this.currentFilter = filter
+            this.filter()
+        },
+        filter() {
+            switch(this.currentFilter) {
                 case "all": 
                     for (let pokemon of this.pokemonData) {pokemon.shown = true}; break
                 case "favourites": 

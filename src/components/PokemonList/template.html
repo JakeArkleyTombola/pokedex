@@ -1,4 +1,5 @@
 <div v-on:click="onClick" class="container">
+    <img class="favourite" v-if="pokemon.favourite" src="../../assets/star-active.png">
     <img :src="pokemon.img" />
     <h2>{{pokemon.name}}</h2>
 </div>
