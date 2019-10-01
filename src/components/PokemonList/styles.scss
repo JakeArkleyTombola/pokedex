@@ -3,7 +3,7 @@
     border-radius: 20px;
     text-align: center;
     margin: 10px;
-    padding: 0px;
+    padding: 0 5px;
     width: 150px;
     cursor: pointer;
     img {
@@ -17,10 +17,12 @@
         overflow: hidden;
     }
     .favourite {
-        z-index: 1;
-        position: relative;
-        float: right;
+        position: absolute;
+        display: block;
         height: 40px;
         width: 40px;
+    }
+    .active {
+        display: none;
     }
 }

@@ -4,7 +4,6 @@ import InfoPanel from "./components/InfoPanel/index.vue";
 import SortBar from "./components/SortBar/index.vue";
 import Header from "./components/Header/index.vue";
 import SplashScreen from "./components/SplashScreen/index.vue";
-import EasterEgg from "./components/EasterEgg/index.vue";
 import axios from 'axios';
 
 interface IPokemon {
@@ -27,7 +26,7 @@ let v = new Vue({
         <Header/>
         <SortBar v-on:changeSort="selectSort" v-on:changeFilter="selectFilter"/>
             <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
-                <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown :pokemon="pokemon" v-on:selectPokemon="changePokemon"/>       
+                <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown :pokemon="pokemon" :favourited="pokemon.favourite" v-on:selectPokemon="changePokemon" ref="list"/>       
             </div>
         <InfoPanel v-on:toggleFavourite="toggleFavourite" v-on:dismiss="dismiss" v-if="infoPanelToggle" :pokemon="currentPokemon"/>
     </div>
@@ -37,7 +36,7 @@ let v = new Vue({
         infoPanelToggle: false,
         currentSort: "",
         currentFilter: "",
-        currentPokemon: {} as IPokemon
+        currentPokemon: {} as IPokemon,
     },
     components: {
         PokemonList,
@@ -52,7 +51,7 @@ let v = new Vue({
         this.pokemonData = response.data.pokemon
         for (let pokemon of this.pokemonData) {pokemon.favourite = false;}
         this.selectFilter("all");
-
+        this.pokemonData[0].favourite = true
         })
     },
     methods: {
@@ -62,10 +61,12 @@ let v = new Vue({
         },
         dismiss () {
             this.infoPanelToggle = false
+            this.$forceUpdate()
         },
         toggleFavourite(pokemon:IPokemon) {
             pokemon.favourite = !pokemon.favourite
             this.filter()
+            //this.$refs.form.update()
         },
         selectSort(sort:string = "") {
             this.currentSort = sort;
