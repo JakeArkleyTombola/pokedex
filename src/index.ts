@@ -3,6 +3,8 @@ import PokemonList from "./components/PokemonList/index.vue";
 import InfoPanel from "./components/InfoPanel/index.vue";
 import SortBar from "./components/SortBar/index.vue";
 import Header from "./components/Header/index.vue";
+import SplashScreen from "./components/SplashScreen/index.vue";
+import EasterEgg from "./components/EasterEgg/index.vue";
 import axios from 'axios';
 
 interface IPokemon {
@@ -21,6 +23,7 @@ let v = new Vue({
     el: "#app",
     template: `
     <div>
+        <SplashScreen/>
         <Header/>
         <SortBar v-on:changeSort="selectSort" v-on:changeFilter="selectFilter"/>
             <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
@@ -38,7 +41,9 @@ let v = new Vue({
         PokemonList,
         SortBar,
         InfoPanel,
-        Header
+        Header,
+        SplashScreen,
+    
     },
     mounted () {
         var i = axios.get('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json').then ((response:any) => {
