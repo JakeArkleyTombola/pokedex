@@ -5,7 +5,7 @@ export default Vue.extend({
     props: ['pokemon'],
     methods: {
         onClick() {
-          this.$emit("selectPokemon", this.pokemon.id - 1)
+          this.$emit("selectPokemon", this.pokemon.id)
         }
     }
 });

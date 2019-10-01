@@ -26,13 +26,13 @@ let v = new Vue({
             <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
                 <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown :pokemon="pokemon" v-on:selectPokemon="changePokemon"/>       
             </div>
-        <InfoPanel v-on:dismiss="dismiss" v-if="infoPanelToggle" :pokemon="pokemonData[currentPokemon]"/>
+        <InfoPanel v-on:dismiss="dismiss" v-if="infoPanelToggle" :pokemon="currentPokemon"/>
     </div>
     `,
     data: {
         pokemonData:[] as IPokemon[],
         infoPanelToggle: false,
-        currentPokemon: 0
+        currentPokemon: {} as IPokemon
     },
     components: {
         PokemonList,
@@ -45,19 +45,19 @@ let v = new Vue({
         this.pokemonData = response.data.pokemon
         for (let pokemon of this.pokemonData) {pokemon.favourite = false;}
         for (let i = 0; i < 5; i++) {
-            this.pokemonData[i].favourite = true;
+            this.pokemonData[i].favourite = true
         }
         this.selectFilter("all");
 
         })
     },
     methods: {
-        changePokemon (numb:number) {
-            this.infoPanelToggle = true;
-            this.currentPokemon = numb;
+        changePokemon (id:any) {
+            this.infoPanelToggle = true
+            this.currentPokemon = this.pokemonData.find(pokemon => pokemon.id === id) || {} as IPokemon
         },
         dismiss () {
-            this.infoPanelToggle = false;
+            this.infoPanelToggle = false
         },
         selectSort(sort:string = "") {
             switch(sort) {
@@ -91,11 +91,11 @@ let v = new Vue({
         },
         aZSort() {
             this.pokemonData.sort(function(a, b) {
-                var x = a.name.toLowerCase();
-                var y = b.name.toLowerCase();
+                var x = a.name.toLowerCase()
+                var y = b.name.toLowerCase()
                 if (x < y) {return -1;}
                 if (x > y) {return 1;}
-                return 0;
+                return 0
             })
         },
         zASort() {
@@ -117,6 +117,5 @@ let v = new Vue({
         numberSort() {
             this.pokemonData.sort(function(a, b) {return +a.id - +b.id})
         }
-
     }
 });
