@@ -51,7 +51,6 @@ let v = new Vue({
         this.pokemonData = response.data.pokemon
         for (let pokemon of this.pokemonData) {pokemon.favourite = false;}
         this.selectFilter("all");
-        this.pokemonData[0].favourite = true
         })
     },
     methods: {
@@ -66,7 +65,6 @@ let v = new Vue({
         toggleFavourite(pokemon:IPokemon) {
             pokemon.favourite = !pokemon.favourite
             this.filter()
-            //this.$refs.form.update()
         },
         selectSort(sort:string = "") {
             this.currentSort = sort;
