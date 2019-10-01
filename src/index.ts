@@ -22,7 +22,7 @@ let v = new Vue({
     template: `
     <div>
         <Header/>
-        <SortBar/>
+        <SortBar v-on:changeSort="selectSort" v-on:changeFilter="selectFilter"/>
             <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
                 <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown :pokemon="pokemon" v-on:selectPokemon="changePokemon"/>       
             </div>
@@ -44,7 +44,11 @@ let v = new Vue({
         var i = axios.get('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json').then ((response:any) => {
         this.pokemonData = response.data.pokemon
         for (let pokemon of this.pokemonData) {pokemon.favourite = false;}
-        for (let pokemon of this.pokemonData) {pokemon.shown = true;}
+        for (let i = 0; i < 5; i++) {
+            this.pokemonData[i].favourite = true;
+        }
+        this.selectFilter("all");
+
         })
     },
     methods: {
@@ -54,6 +58,36 @@ let v = new Vue({
         },
         dismiss () {
             this.infoPanelToggle = false;
+        },
+        selectSort(sort:string = "") {
+            switch(sort) {
+                case "number":
+                    this.numberSort(); break;
+                case "az":
+                    this.aZSort(); break;
+                case "za":
+                    this.zASort(); break;
+                case "height":
+                    this.heightSort(); break;
+                case "weight":
+                    this.weightSort(); break;
+                default:
+                    this.numberSort(); break;
+            }
+            this.$forceUpdate();
+        },
+        selectFilter(filter:string = "") {
+            switch(filter) {
+                case "all": 
+                    for (let pokemon of this.pokemonData) {pokemon.shown = true}; break
+                case "favourites": 
+                    for (let pokemon of this.pokemonData) {pokemon.shown = pokemon.favourite}; break
+                case "non-favourites": 
+                    for (let pokemon of this.pokemonData) {pokemon.shown = !pokemon.favourite}; break
+                default: 
+                    for (let pokemon of this.pokemonData) {pokemon.shown = true}; break
+            }
+            this.$forceUpdate();
         },
         aZSort() {
             this.pokemonData.sort(function(a, b) {
