@@ -9,10 +9,12 @@ interface IPokemon {
     id: string
     name: string
     img: string
-    types: []
+    type: []
     weaknesses: []
     weight: string
     height: string
+    favourite: boolean
+    shown: boolean
 }
 
 let v = new Vue({
@@ -21,22 +23,16 @@ let v = new Vue({
     <div>
         <Header/>
         <SortBar/>
-            <div v-on:click="changePokemon" style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
-                <PokemonList v-for="pokemon in pokemonData"
-                :name="pokemon.name"
-                :url="pokemon.img"
-                :types="pokemon.type.toString()"
-                :weaknesses="pokemon.weaknesses.toString()"
-                :weight="pokemon.weight"
-                :height="pokemon.height"
-                />       
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
+                <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown :pokemon="pokemon" v-on:selectPokemon="changePokemon"/>       
             </div>
-        <InfoPanel v-on:dismiss="changePokemon" v-if="infoPanelToggle"/>
+        <InfoPanel v-on:dismiss="dismiss" v-if="infoPanelToggle" :pokemon="pokemonData[currentPokemon]"/>
     </div>
     `,
     data: {
         pokemonData:[] as IPokemon[],
-        infoPanelToggle: false
+        infoPanelToggle: false,
+        currentPokemon: 0
     },
     components: {
         PokemonList,
@@ -46,12 +42,18 @@ let v = new Vue({
     },
     mounted () {
         var i = axios.get('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json').then ((response:any) => {
-        this.pokemonData = response.data.pokemon;
+        this.pokemonData = response.data.pokemon
+        for (let pokemon of this.pokemonData) {pokemon.favourite = false;}
+        for (let pokemon of this.pokemonData) {pokemon.shown = true;}
         })
     },
     methods: {
-        changePokemon () {
-            this.infoPanelToggle = !this.infoPanelToggle;
+        changePokemon (numb:number) {
+            this.infoPanelToggle = true;
+            this.currentPokemon = numb;
+        },
+        dismiss () {
+            this.infoPanelToggle = false;
         },
         aZSort() {
             this.pokemonData.sort(function(a, b) {
