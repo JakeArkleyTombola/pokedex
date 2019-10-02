@@ -1,8 +1,11 @@
-<div>
-    <div v-on:click="onClick" class="background-blur"></div>
+<div> 
+    <div v-on:click="dismiss" class="background-blur"></div>
     <div class="info-panel">
+        <img v-on:click="favourite" v-if="pokemon.favourite" class="favourite" src="../../assets/star-active.png">
+        <img v-on:click="favourite" v-if="!pokemon.favourite" class="favourite" src="../../assets/star-inactive.png">
+        <img class="cross"  src="../../assets/cross.png" v-on:click="dismiss">
         <h3>{{pokemon.name}}</h3>
-        <img :src="pokemon.img"/>
+        <img class="pokemon" :src="pokemon.img"/>
         <p>Types:<br>
         {{pokemon.type.toString()}}<br>
         Weaknesses:<br>

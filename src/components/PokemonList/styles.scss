@@ -1,18 +1,27 @@
 .container {
+    font-family: sans-serif;
     background-color: #e9eaec;
     border-radius: 20px;
     text-align: center;
     margin: 10px;
-    padding: 0px;
+    padding: 5px;
     width: 150px;
+    cursor: pointer;
     img {
-        width: 100%;
+        width: 130px;
+        height: 130px;
     }
-    .text {
-        font-size: 20px;
+    h2 {
+        font-size: 22px;
+        color: mediumpurple
     }
-    p {
-        line-height: 1.2;
-        overflow: hidden;
+    .favourite {
+        position: absolute;
+        display: block;
+        height: 40px;
+        width: 40px;
+    }
+    .active {
+        display: none;
     }
 }

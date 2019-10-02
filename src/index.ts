@@ -4,7 +4,6 @@ import InfoPanel from "./components/InfoPanel/index.vue";
 import SortBar from "./components/SortBar/index.vue";
 import Header from "./components/Header/index.vue";
 import SplashScreen from "./components/SplashScreen/index.vue";
-import EasterEgg from "./components/EasterEgg/index.vue";
 import axios from 'axios';
 
 interface IPokemon {
@@ -27,16 +26,17 @@ let v = new Vue({
         <Header/>
         <SortBar v-on:changeSort="selectSort" v-on:changeFilter="selectFilter"/>
             <div style="display: flex; flex-wrap: wrap; justify-content: center; max-width: 600px; margin: auto">
-                <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown :pokemon="pokemon" v-on:selectPokemon="changePokemon"/>       
+                <PokemonList v-for="pokemon in pokemonData" v-if=pokemon.shown :pokemon="pokemon" :favourited="pokemon.favourite" v-on:selectPokemon="changePokemon" ref="list"/>       
             </div>
-        <InfoPanel v-on:dismiss="dismiss" v-if="infoPanelToggle" :pokemon="pokemonData[currentPokemon]"/>
-       
+        <InfoPanel v-on:toggleFavourite="toggleFavourite" v-on:dismiss="dismiss" v-if="infoPanelToggle" :pokemon="currentPokemon"/>
     </div>
     `,
     data: {
         pokemonData:[] as IPokemon[],
         infoPanelToggle: false,
-        currentPokemon: 0
+        currentSort: "",
+        currentFilter: "",
+        currentPokemon: {} as IPokemon,
     },
     components: {
         PokemonList,
@@ -50,40 +50,49 @@ let v = new Vue({
         var i = axios.get('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json').then ((response:any) => {
         this.pokemonData = response.data.pokemon
         for (let pokemon of this.pokemonData) {pokemon.favourite = false;}
-        for (let i = 0; i < 5; i++) {
-            this.pokemonData[i].favourite = true;
-        }
         this.selectFilter("all");
-
         })
     },
     methods: {
-        changePokemon (numb:number) {
-            this.infoPanelToggle = true;
-            this.currentPokemon = numb;
+        changePokemon (id:any) {
+            this.infoPanelToggle = true
+            this.currentPokemon = this.pokemonData.find(pokemon => pokemon.id === id) || {} as IPokemon
         },
         dismiss () {
-            this.infoPanelToggle = false;
+            this.infoPanelToggle = false
+            this.$forceUpdate()
+        },
+        toggleFavourite(pokemon:IPokemon) {
+            pokemon.favourite = !pokemon.favourite
+            this.filter()
         },
         selectSort(sort:string = "") {
-            switch(sort) {
+            this.currentSort = sort;
+            this.sort()
+        },
+        sort() {
+            switch(this.currentSort) {
                 case "number":
-                    this.numberSort(); break;
+                    this.numberSort(); break
                 case "az":
-                    this.aZSort(); break;
+                    this.aZSort(); break
                 case "za":
-                    this.zASort(); break;
+                    this.zASort(); break
                 case "height":
-                    this.heightSort(); break;
+                    this.heightSort(); break
                 case "weight":
-                    this.weightSort(); break;
+                    this.weightSort(); break
                 default:
-                    this.numberSort(); break;
+                    this.numberSort(); break
             }
-            this.$forceUpdate();
+            this.$forceUpdate()
         },
         selectFilter(filter:string = "") {
-            switch(filter) {
+            this.currentFilter = filter
+            this.filter()
+        },
+        filter() {
+            switch(this.currentFilter) {
                 case "all": 
                     for (let pokemon of this.pokemonData) {pokemon.shown = true}; break
                 case "favourites": 
@@ -97,11 +106,11 @@ let v = new Vue({
         },
         aZSort() {
             this.pokemonData.sort(function(a, b) {
-                var x = a.name.toLowerCase();
-                var y = b.name.toLowerCase();
+                var x = a.name.toLowerCase()
+                var y = b.name.toLowerCase()
                 if (x < y) {return -1;}
                 if (x > y) {return 1;}
-                return 0;
+                return 0
             })
         },
         zASort() {
@@ -123,6 +132,5 @@ let v = new Vue({
         numberSort() {
             this.pokemonData.sort(function(a, b) {return +a.id - +b.id})
         }
-
     }
 });
