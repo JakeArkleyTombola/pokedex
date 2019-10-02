@@ -3,16 +3,14 @@ import Vue from "vue";
 
 export default Vue.extend({
     props: ['pokemon'],
-    data: {
-        sort: "",
-        filter: ""
-    },
     methods: {
         changeSort() {
-            this.$emit("changeSort", this.sort)
+            var sort = document.getElementById("sort")
+            this.$emit("changeSort", sort.value)
         },
         changeFilter() {
-            this.$emit("changeFilter", this.filter)
+            var filter = document.getElementById("filter")
+            this.$emit("changeFilter", filter.value)
         }
     }
 });

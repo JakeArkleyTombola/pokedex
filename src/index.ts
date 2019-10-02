@@ -49,8 +49,14 @@ let v = new Vue({
     mounted () {
         var i = axios.get('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json').then ((response:any) => {
         this.pokemonData = response.data.pokemon
-        for (let pokemon of this.pokemonData) {pokemon.favourite = false;}
-        this.selectFilter("all");
+        var retrivedData = sessionStorage.getItem("pokemon")
+        var pokemon = JSON.parse(retrivedData as string)
+        for (let i = 0; i < this.pokemonData.length; i++) {
+            if (pokemon !== null) {
+                this.pokemonData[i].favourite =  pokemon[i].favourite
+            }
+        }
+        this.selectFilter("all")
         })
     },
     methods: {
@@ -64,6 +70,7 @@ let v = new Vue({
         },
         toggleFavourite(pokemon:IPokemon) {
             pokemon.favourite = !pokemon.favourite
+            sessionStorage.setItem("pokemon", JSON.stringify(this.pokemonData))
             this.filter()
         },
         selectSort(sort:string = "") {
