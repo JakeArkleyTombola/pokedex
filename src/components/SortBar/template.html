@@ -1,6 +1,6 @@
 <div class = "sticky">   
-    <select @change="changeSort()" v-model="sort" class="sort">
-        <option value="" disabled>Sort</option>
+    <select @change="changeSort()" id="sort">
+        <option value="" disabled selected>Sort</option>
         <option value="number">ID</option>
         <option value="az">A-Z</option>
         <option value="za">Z-A</option>
@@ -8,8 +8,8 @@
         <option value="weight">Weight</option>
     </select>
 
-    <select @change="changeFilter()" v-model="filter" class="filter">
-        <option value="" disabled>Filter</option>
+    <select @change="changeFilter()" id="filter">
+        <option value="" disabled selected>Filter</option>
         <option value="all">All</option>
         <option value="favourites">Favorites</option>
         <option value="non-favourites">Non-Favorites</option>

@@ -10,11 +10,11 @@ div.sticky {
     font-size: 20px;
     height: 25px;
     padding: 10px; 
- .sort {
+ #sort {
    float:left;
    width:125px;
  }
- .filter{
+ #filter{
    float:right;
    width:125px;
  }
@@ -22,13 +22,11 @@ div.sticky {
   font-family: sans-serif;
   font-size: 20px;
   -webkit-appearance: none;
-  -moz-appearance: none;
-  text-align: center;
   text-align-last: center;
   background-color: white;
   cursor: pointer;
   height: 25px;
   border-radius: 0;
  }
-  }
+}
 
